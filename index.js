@@ -1,8 +1,8 @@
 require("dotenv").config();
 const express = require("express");
 
-const { fibonacci, primeFilter, lcm, hcf } = require("../utils/math");
-const { askAI } = require("../utils/ai");
+const { fibonacci, primeFilter, lcm, hcf } = require("./utils/math");
+const { askAI } = require("./utils/ai");
 
 const app = express();
 app.set("json spaces", 2);
@@ -70,4 +70,8 @@ app.post("/bfhl", async (req, res) => {
   }
 });
 
-module.exports = app;
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
+
