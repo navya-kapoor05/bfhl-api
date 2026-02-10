@@ -1,18 +1,16 @@
-require("dotenv").config({ path: "./.env" });
+require("dotenv").config();
 const express = require("express");
 
-const { fibonacci, primeFilter, lcm, hcf } = require("./utils/math");
-const { askAI } = require("./utils/ai");
+const { fibonacci, primeFilter, lcm, hcf } = require("../utils/math");
+const { askAI } = require("../utils/ai");
 
 const app = express();
 app.set("json spaces", 2);
 app.use(express.json());
 
 const EMAIL = process.env.OFFICIAL_EMAIL;
-console.log("EMAIL FROM ENV =>", EMAIL);
 
-
-/* Health*/
+/* Health */
 app.get("/health", (req, res) => {
   res.status(200).json({
     is_success: true,
@@ -20,10 +18,10 @@ app.get("/health", (req, res) => {
   });
 });
 
-/* Main*/
+/* Main */
 app.post("/bfhl", async (req, res) => {
   try {
-    const keys = Object.keys(req.body);
+    const keys = Object.keys(req.body || {});
 
     if (keys.length !== 1) {
       return res.status(400).json({
@@ -40,23 +38,18 @@ app.post("/bfhl", async (req, res) => {
       case "fibonacci":
         data = fibonacci(value);
         break;
-
       case "prime":
         data = primeFilter(value);
         break;
-
       case "lcm":
         data = lcm(value);
         break;
-
       case "hcf":
         data = hcf(value);
         break;
-
       case "AI":
         data = await askAI(value);
         break;
-
       default:
         return res.status(400).json({
           is_success: false,
@@ -69,7 +62,6 @@ app.post("/bfhl", async (req, res) => {
       official_email: EMAIL,
       data
     });
-
   } catch (err) {
     res.status(500).json({
       is_success: false,
